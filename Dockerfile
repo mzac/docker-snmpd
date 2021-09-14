@@ -19,15 +19,14 @@ LABEL org.label-schema.build-date=$BUILD_DATE \
 EXPOSE 161 161/udp
 
 RUN apk add --update --no-cache linux-headers alpine-sdk curl findutils sed
-RUN mkdir -p /tmp/snmpd/work
-RUN cd /tmp/snmpd
+RUN mkdir -p /tmp/snmpd/src
 RUN curl -L "https://sourceforge.net/projects/net-snmp/files/5.4.5-pre-releases/net-snmp-5.4.5.rc1.tar.gz/download" -o /tmp/snmpd/net-snmp.tgz
-RUN tar zxvf /tmp/snmpd/net-snmp.tgz -C /tmp/snmpd/work
-RUN cd /tmp/snmpd/work/net-snmp-*
-RUN find . -type f -print0 | xargs -0 sed -i 's/\"\/proc/\"\/host_proc/g'
-RUN ./configure --prefix=/usr/local --disable-ipv6 --disable-snmpv1 --with-defaults
-RUN make
-RUN make install
+RUN tar zxvf /tmp/snmpd/net-snmp.tgz --strip-components=1 -C /tmp/snmpd/src
+RUN cd /tmp/snmpd/src && \
+    find /tmp/snmpd/src -type f -print0 | xargs -0 sed -i 's/\"\/proc/\"\/host_proc/g' && \
+    ./configure --prefix=/usr/local --disable-ipv6 --disable-snmpv1 --with-defaults && \
+    make && \
+    make install
 RUN rm -Rf /tmp/snmpd
 RUN apk del linux-headers alpine-sdk curl findutils sed
 
