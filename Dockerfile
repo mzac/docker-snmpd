@@ -22,6 +22,8 @@ RUN apk add --update --no-cache linux-headers alpine-sdk curl findutils sed auto
 RUN mkdir -p /tmp/snmpd/src
 RUN curl -L "https://sourceforge.net/projects/net-snmp/files/5.4.5-pre-releases/net-snmp-5.4.5.rc1.tar.gz/download" -o /tmp/snmpd/net-snmp.tgz
 RUN tar zxvf /tmp/snmpd/net-snmp.tgz --strip-components=1 -C /tmp/snmpd/src
+RUN wget -O /tmp/snmpd/work/config.guess 'https://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD'
+RUN wget -O /tmp/snmpd/work/config.sub 'https://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=HEAD'
 RUN cd /tmp/snmpd/src && \
     find /tmp/snmpd/src -type f -print0 | xargs -0 sed -i 's/\"\/proc/\"\/host_proc/g' && \
     cp /usr/share/automake-*/config.guess /tmp/snmpd/src && \
