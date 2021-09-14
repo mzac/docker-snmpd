@@ -26,7 +26,6 @@ RUN wget -O /tmp/snmpd/src/config.guess 'https://git.savannah.gnu.org/gitweb/?p=
 RUN wget -O /tmp/snmpd/src/config.sub 'https://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=HEAD'
 RUN cd /tmp/snmpd/src && \
     find /tmp/snmpd/src -type f -print0 | xargs -0 sed -i 's/\"\/proc/\"\/host_proc/g' && \
-    cp /usr/share/automake-*/config.guess /tmp/snmpd/src && \
     ./configure --prefix=/usr/local --disable-ipv6 --disable-snmpv1 --with-defaults && \
     make && \
     make install
