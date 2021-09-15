@@ -18,7 +18,6 @@ EXPOSE 161 161/udp
 
 RUN apk add --update --no-cache linux-headers alpine-sdk curl findutils sed
 RUN mkdir -p /tmp/snmpd/src
-# RUN curl -L "https://sourceforge.net/projects/net-snmp/files/5.4.5-pre-releases/net-snmp-5.4.5.rc1.tar.gz/download" -o /tmp/snmpd/net-snmp.tgz
 RUN curl -L "https://sourceforge.net/projects/net-snmp/files/net-snmp/5.9.1/net-snmp-5.9.1.tar.gz/download" -o /tmp/snmpd/net-snmp.tgz
 RUN tar zxvf /tmp/snmpd/net-snmp.tgz --strip-components=1 -C /tmp/snmpd/src
 RUN wget -O /tmp/snmpd/src/config.guess 'https://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD'
@@ -33,6 +32,7 @@ RUN make install
 RUN rm -Rf /tmp/snmpd
 RUN apk del linux-headers alpine-sdk curl findutils sed
 
+RUN mkdir /etc/snmp
 COPY snmpd.conf /etc/snmp
 
 CMD [ "/usr/local/sbin/snmpd", "-f", "-c", "/etc/snmp/snmpd.conf" ]
