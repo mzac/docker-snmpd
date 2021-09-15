@@ -37,7 +37,7 @@ jobs:
             --cache-to "type=local,dest=/tmp/.buildx-cache" \
             --platform linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64 \
             --output "type=image,push=false" \
-            --tag mzac/docker-snmpd:latest \
+            --tag mzac23/docker-snmpd:latest \
             --file ./Dockerfile ./
 
       - name: Login to DockerHub
@@ -52,9 +52,9 @@ jobs:
             --cache-from "type=local,src=/tmp/.buildx-cache" \
             --platform linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64 \
             --output "type=image,push=true" \
-            --tag mzac/docker-snmpd:latest \
+            --tag mzac23/docker-snmpd:latest \
             --file ./Dockerfile ./
 
       - name: Inspect image
         run: |
-          docker buildx imagetools inspect mzac/docker-snmpd:latest
+          docker buildx imagetools inspect mzac23/docker-snmpd:latest
