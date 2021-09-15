@@ -1,7 +1,5 @@
 FROM alpine:latest
 
-MAINTAINER Troy Kelly <troy.kelly@really.ai>
-
 # Build-time metadata as defined at http://label-schema.org
 ARG BUILD_DATE
 ARG VCS_REF
@@ -20,15 +18,18 @@ EXPOSE 161 161/udp
 
 RUN apk add --update --no-cache linux-headers alpine-sdk curl findutils sed
 RUN mkdir -p /tmp/snmpd/src
-RUN curl -L "https://sourceforge.net/projects/net-snmp/files/5.4.5-pre-releases/net-snmp-5.4.5.rc1.tar.gz/download" -o /tmp/snmpd/net-snmp.tgz
+# RUN curl -L "https://sourceforge.net/projects/net-snmp/files/5.4.5-pre-releases/net-snmp-5.4.5.rc1.tar.gz/download" -o /tmp/snmpd/net-snmp.tgz
+RUN curl -L "https://sourceforge.net/projects/net-snmp/files/net-snmp/5.9.1/net-snmp-5.9.1.tar.gz/download" -o /tmp/snmpd/net-snmp.tgz
 RUN tar zxvf /tmp/snmpd/net-snmp.tgz --strip-components=1 -C /tmp/snmpd/src
 RUN wget -O /tmp/snmpd/src/config.guess 'https://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD'
 RUN wget -O /tmp/snmpd/src/config.sub 'https://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=HEAD'
-RUN cd /tmp/snmpd/src && \
-    find /tmp/snmpd/src -type f -print0 | xargs -0 sed -i 's/\"\/proc/\"\/host_proc/g' && \
-    ./configure --prefix=/usr/local --disable-ipv6 --disable-snmpv1 --with-defaults && \
-    make && \
-    make install
+
+WORKDIR /tmp/snmpd/src
+RUN find /tmp/snmpd/src -type f -print0 | xargs -0 sed -i 's/\"\/proc/\"\/host_proc/g'
+RUN ./configure --prefix=/usr/local --disable-ipv6 --disable-snmpv1 --with-defaults
+RUN make
+RUN make install
+
 RUN rm -Rf /tmp/snmpd
 RUN apk del linux-headers alpine-sdk curl findutils sed
 
