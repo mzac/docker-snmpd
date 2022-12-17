@@ -15,7 +15,7 @@ docker run -d \
   --read-only \
   -p 161:161/udp \
   --name snmpd
-  mzac23/snmpd
+  mzac23/docker-snmpd
 ```
 
 On Home Assistant OS
@@ -31,7 +31,7 @@ docker run -d \
   --read-only \
   --net host \
   --name snmpd
-  mzac23/snmpd
+  mzac23/docker-snmpd
 ```
 
 Your own snmpd.conf
@@ -44,7 +44,7 @@ docker run -d -v /my/snmpd.conf:/etc/snmp/snmpd.conf \
   --read-only \
   -p 161:161/udp \
   --name snmpd
-  mzac23/snmpd
+  mzac23/docker-snmpd
 ```
 
 Important Notes
