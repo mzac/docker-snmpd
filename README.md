@@ -14,7 +14,7 @@ docker run -d \
   --privileged \
   --read-only \
   -p 161:161/udp \
-  --name snmpd
+  --name snmpd \
   mzac23/docker-snmpd
 ```
 
@@ -30,7 +30,7 @@ docker run -d \
   --privileged \
   --read-only \
   --net host \
-  --name snmpd
+  --name snmpd \
   mzac23/docker-snmpd
 ```
 
@@ -43,7 +43,7 @@ docker run -d -v /my/snmpd.conf:/etc/snmp/snmpd.conf \
   --privileged \
   --read-only \
   -p 161:161/udp \
-  --name snmpd
+  --name snmpd \
   mzac23/docker-snmpd
 ```
 
